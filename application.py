@@ -65,7 +65,6 @@ def showHome():
 
     return render_template('home.html', categories=categories, items=items)
 
-    # return categories[0].name
     # if 'username' not in login_session:
     #     return render_template('publicrestaurants.html', restaurants=restaurants, session=login_session)
     # else:
@@ -100,7 +99,16 @@ def newItem():
         # This will render a form to add a new item
         return render_template('additem.html', categories=categories)
     if request.method == 'POST':
-        return "This will add a new item to the database"
+        # This will add a new item to the database
+        category = session.query(Category).filter_by(name=request.form['category']).one()
+
+        item = Item(name=request.form['name'],
+                    description=request.form['description'],
+                    category=category)
+        session.add(item)
+        session.commit()
+
+        return redirect(url_for('showHome'))
 
 
 @app.route('/catalog/<item_id>/edit', methods = ['GET', 'POST'])
