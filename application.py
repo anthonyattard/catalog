@@ -3,6 +3,7 @@ from flask import Flask, jsonify, request, url_for, abort, g
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
+from sqlalchemy import desc
 
 from flask_httpauth import HTTPBasicAuth
 auth = HTTPBasicAuth()
@@ -58,18 +59,57 @@ def new_user():
 
 @app.route('/')
 def showAllCategoriesLatestItems():
-    return "This will show all categories with the latest items"
+    # return "This will show all categories with the latest items"
+    categories = session.query(Category).all()
+    items = session.query(Item).order_by(desc(Item.id)).limit(9)
+    html = ""
+    html += "<h1>Categories</h1>"
+    for category in categories:
+        html += category.name + "<br>"
+
+    html += "<h1>Latest Items</h1>"
+    for item in items:
+        html += item.name + "<br>"
 
 
-@app.route('/catalog/<category>/items')
-def showCategory(category):
-    return "This will show all items in a category"
+    return html
+    # return categories[0].name
+    # if 'username' not in login_session:
+    #     return render_template('publicrestaurants.html', restaurants=restaurants, session=login_session)
+    # else:
+    #     return render_template('restaurants.html', restaurants=restaurants, session=login_session)
 
 
-@app.route('/catalog/<category>/<item_name>')
+@app.route('/catalog/<string:category_name>/items')
+def showCategory(category_name):
+    print category_name
+    # return "This will show all items in a category"
+    category = session.query(Category).filter_by(name=category_name).one()
+
+    items = session.query(Item).filter_by(category=category).all()
+    
+    html = ""
+    html += "<h1>Items</h1>"
+    for item in items:
+        html += item.name + "<br>"
+
+    return html
+
+
+@app.route('/catalog/<category_name>/<int:item_id>')
 # @auth.login_required
-def showItem(category, item_name):
-    return "This will show an item"
+def showItem(category_name, item_id):
+    # return "This will show an item"
+    item = session.query(Item).filter_by(id=item_id).one()
+
+    html = ""
+    html += item.name + "<br>"
+    html += item.description
+
+    return html
+
+
+
     
 
 @app.route('/catalog/new', methods = ['GET', 'POST'])
