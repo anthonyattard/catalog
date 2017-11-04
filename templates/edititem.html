@@ -2,10 +2,10 @@
 {% block content %}
 <div class="col-sm-12">
   <h1>Edit Item</h1>
-  <form action="#" method="post">
+  <form action="{{ url_for('editItem', item_id=item.id )}}" method="post">
     <div class="form-group">
-      <label for="title">Title:</label>
-      <input type="text" maxlength="50" class="form-control" name="title" placeholder="Name of the item" value="{{ item.name }}">
+      <label for="name">Name:</label>
+      <input type="text" maxlength="50" class="form-control" name="name" placeholder="Name of the item" value="{{ item.name }}">
 
       <label for="description">Description:</label>
       <textarea class="form-control" maxlength="250" rows="3" name="description" placeholder="Description of the item">{{ item.description }}</textarea>
@@ -17,7 +17,7 @@
         {% endfor %}
         </select>
       </div>
-      <button type="submit" class="btn btn-default" id="submit" type="submit">Create</button>
+      <button type="submit" class="btn btn-default" id="submit" type="submit">Update</button>
     </div>
   </form>
 </div>

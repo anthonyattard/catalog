@@ -81,7 +81,7 @@ def showCategory(category_name):
     return render_template('category.html', categories=categories, category=category, items=items)
 
 
-@app.route('/catalog/<category_name>/<int:item_id>')
+@app.route('/catalog/<string:category_name>/<int:item_id>')
 # @auth.login_required
 def showItem(category_name, item_id):
     # return "This will show an item"
@@ -111,7 +111,7 @@ def newItem():
         return redirect(url_for('showHome'))
 
 
-@app.route('/catalog/<item_id>/edit', methods = ['GET', 'POST'])
+@app.route('/catalog/<int:item_id>/edit', methods = ['GET', 'POST'])
 # @auth.login_required
 def editItem(item_id):
     categories = session.query(Category).all()
@@ -121,7 +121,18 @@ def editItem(item_id):
         return render_template('edititem.html', categories=categories, item=item)
 
     if request.method == 'POST':
-        return "This will commit the item edit to the database"
+        # This will commit the item edit to the database
+        item.category = item.category
+        if request.form['name']:
+            item.name = request.form['name']
+        if request.form['description']:
+            item.description = request.form['description']
+        if request.form['category']:
+            item.category = session.query(Category).filter_by(name=request.form['category']).one()
+        session.add(item)
+        session.commit()
+
+        return redirect(url_for('showItem', category_name=item.category.name, item_id=item.id))
 
 
 @app.route('/catalog/<item_id>/delete', methods = ['GET', 'POST'])
