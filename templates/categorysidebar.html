@@ -1,4 +1,6 @@
-  <h1>Categories</h1>
-  {% for category in categories %}
-    <p>{{ category.name }}</p>
-  {% endfor %}
+<h1>Categories</h1>
+{% for category in categories %}
+<p>
+  <a href="{{ url_for('showCategory', category_name=category.name) }}">{{ category.name }}</a>
+</p>
+{% endfor %}
