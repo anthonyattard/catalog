@@ -144,7 +144,10 @@ def deleteItem(item_id):
         # This will render a form to delete an item
         return render_template('deleteitem.html', item=item)
     if request.method == 'POST':
-        return "This will delete an item from the database"
+        # This will delete an item from the database
+        session.delete(item)
+        session.commit()
+        return redirect(url_for('showHome'))
 
 
 @app.route('/catalog.json')
