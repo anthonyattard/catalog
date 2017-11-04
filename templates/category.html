@@ -1,0 +1,12 @@
+{% extends "main.html" %}
+{% block content %}
+<div class="col-sm-4">
+  {% include "categorysidebar.html" %}
+</div>
+<div class="col-sm-8">
+  <h1>{{ category.name }} Items ({{ items|length }} items)</h1>
+  {% for item in items %}
+    <p>{{ item.name }}</p>
+  {% endfor %}
+</div>
+{% endblock %}
