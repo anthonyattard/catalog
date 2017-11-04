@@ -90,9 +90,6 @@ def showItem(category_name, item_id):
     item = session.query(Item).filter_by(id=item_id, category=category).one()
 
     return render_template('item.html', category=category, item=item)
-
-
-
     
 
 @app.route('/catalog/new', methods = ['GET', 'POST'])
