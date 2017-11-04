@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Catalog App</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='dist/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="{{ url_for('static', filename='dist/bootstrap/css/ie10-viewport-bug-workaround.css') }}" rel="stylesheet">
+
+    <!-- Custom styles -->
+    <link href="{{ url_for('static', filename='css/app.css') }}" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Catalog App</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <a href="#"><button type="button" class="btn btn-default navbar-btn">Login</button></a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      {% block content %}
+      {% endblock %}
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="../static/dist/bootstrap/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../static/dist/bootstrap/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
