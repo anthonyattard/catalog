@@ -1,5 +1,5 @@
 from models import Base, User, Category, Item
-from flask import Flask, jsonify, request, url_for, abort, g
+from flask import Flask, jsonify, request, url_for, abort, g, render_template, redirect
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
@@ -58,21 +58,13 @@ def new_user():
 
 
 @app.route('/')
-def showAllCategoriesLatestItems():
-    # return "This will show all categories with the latest items"
+def showHome():
+    # This will show all categories with the latest items
     categories = session.query(Category).all()
     items = session.query(Item).order_by(desc(Item.id)).limit(9)
-    html = ""
-    html += "<h1>Categories</h1>"
-    for category in categories:
-        html += category.name + "<br>"
 
-    html += "<h1>Latest Items</h1>"
-    for item in items:
-        html += item.name + "<br>"
+    return render_template('home.html', categories=categories, items=items)
 
-
-    return html
     # return categories[0].name
     # if 'username' not in login_session:
     #     return render_template('publicrestaurants.html', restaurants=restaurants, session=login_session)
@@ -82,31 +74,22 @@ def showAllCategoriesLatestItems():
 
 @app.route('/catalog/<string:category_name>/items')
 def showCategory(category_name):
-    print category_name
-    # return "This will show all items in a category"
+    # This will show all items in a category
+    categories = session.query(Category).all()
     category = session.query(Category).filter_by(name=category_name).one()
-
     items = session.query(Item).filter_by(category=category).all()
-    
-    html = ""
-    html += "<h1>Items</h1>"
-    for item in items:
-        html += item.name + "<br>"
 
-    return html
+    return render_template('category.html', categories=categories, category=category, items=items)
 
 
 @app.route('/catalog/<category_name>/<int:item_id>')
 # @auth.login_required
 def showItem(category_name, item_id):
     # return "This will show an item"
-    item = session.query(Item).filter_by(id=item_id).one()
+    category = session.query(Category).filter_by(name=category_name).one()
+    item = session.query(Item).filter_by(id=item_id, category=category).one()
 
-    html = ""
-    html += item.name + "<br>"
-    html += item.description
-
-    return html
+    return render_template('item.html', category=category, item=item)
 
 
 
@@ -115,26 +98,35 @@ def showItem(category_name, item_id):
 @app.route('/catalog/new', methods = ['GET', 'POST'])
 # @auth.login_required
 def newItem():
+    categories = session.query(Category).all()
     if request.method == 'GET':
-        return "This will render a form to add a new item"
+        # This will render a form to add a new item
+        return render_template('additem.html', categories=categories)
     if request.method == 'POST':
         return "This will add a new item to the database"
 
 
-@app.route('/catalog/<item_name>/edit', methods = ['GET', 'POST'])
+@app.route('/catalog/<item_id>/edit', methods = ['GET', 'POST'])
 # @auth.login_required
-def editItem(item_name):
+def editItem(item_id):
+    categories = session.query(Category).all()
+    item = session.query(Item).filter_by(id=item_id).one()
     if request.method == 'GET':
-        return "This will render a form to edit an item"
+        # This will render a form to edit an item
+        return render_template('edititem.html', categories=categories, item=item)
+
     if request.method == 'POST':
         return "This will commit the item edit to the database"
 
 
-@app.route('/catalog/<item_name>/delete', methods = ['GET', 'POST'])
+@app.route('/catalog/<item_id>/delete', methods = ['GET', 'POST'])
 # @auth.login_required
-def deleteItem(item_name):
+def deleteItem(item_id):
+    item = session.query(Item).filter_by(id=item_id).one()
+
     if request.method == 'GET':
-        return "This will render a form to delete an item"
+        # This will render a form to delete an item
+        return render_template('deleteitem.html', item=item)
     if request.method == 'POST':
         return "This will delete an item from the database"
 
