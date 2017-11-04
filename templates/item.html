@@ -3,6 +3,6 @@
 <div class="col-sm-12">
   <h1>{{ item.name }}</h1>
   <p>Description: {{ item.description }}</p>
-  <p><i>Category: {{ item.category.name }}</i></p>
+  <p><i>Category: <a href="{{ url_for('showCategory', category_name=item.category.name) }}">{{ item.category.name }}</a></i></p>
 </div>
 {% endblock %}
