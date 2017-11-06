@@ -6,6 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy import desc
 from flask import session as login_session
 import random, string
+import config
 
 app = Flask(__name__)
 
@@ -14,6 +15,9 @@ Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
+app.config['GOOGLE_CLIENT_ID'] = config.GOOGLE_CLIENT_ID
+app.config['GOOGLE_CLIENT_SECRET'] = config.GOOGLE_CLIENT_SECRET
 
 
 # Create anti-forgery state token
