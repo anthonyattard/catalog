@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def showHome():
-    # This will show all categories with the latest items
+    """This will show all categories with the latest items"""
     categories = session.query(Category).all()
     items = session.query(Item).order_by(desc(Item.id)).limit(9)
 
@@ -24,7 +24,7 @@ def showHome():
 
 @app.route('/catalog/<string:category_name>/items')
 def showCategory(category_name):
-    # This will show all items in a category
+    """This will show all items in a category"""
     categories = session.query(Category).all()
     category = session.query(Category).filter_by(name=category_name).one()
     items = session.query(Item).filter_by(category=category).all()
@@ -34,7 +34,7 @@ def showCategory(category_name):
 
 @app.route('/catalog/<string:category_name>/<int:item_id>')
 def showItem(category_name, item_id):
-    # return "This will show an item"
+    """This will show an item"""
     category = session.query(Category).filter_by(name=category_name).one()
     item = session.query(Item).filter_by(id=item_id, category=category).one()
 
