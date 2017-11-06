@@ -52,77 +52,88 @@ session.commit()
 
 item1 = Item(name="Soccer Ball", 
      description="For practice or the big game, you need to be quick on your feet. Lace up the Nike Men Vapor Varsity Low TD Football Cleats and step out on the gridiron youll be ready to charge down the field in comfort and style.",
-     category=category1)
+     category=category1,
+     user_id=1)
 
 session.add(item1)
 session.commit()
 
 item2 = Item(name="Soccer Cleats", 
      description="Donec sed augue at eros bibendum aliquet in sit amet nunc. Maecenas fringilla dolor at sem lobortis, non porttitor felis lobortis. Integer non dolor vel neque eleifend consequat sit amet sit amet ligula.",
-     category=category1)
+     category=category1,
+     user_id=1)
 
 session.add(item2)
 session.commit()
 
 item3 = Item(name="Bball Band", 
      description="Donec sed augue at eros bibendum aliquet in sit amet nunc. Maecenas fringilla dolor at sem lobortis, non porttitor felis lobortis. Integer non dolor vel neque eleifend consequat sit amet sit amet ligula.",
-     category=category2)
+     category=category2,
+     user_id=1)
 
 session.add(item3)
 session.commit()
 
 item4 = Item(name="Baseball Glove", 
      description="Donec sed augue at eros bibendum aliquet in sit amet nunc. Maecenas fringilla dolor at sem lobortis, non porttitor felis lobortis. Integer non dolor vel neque eleifend consequat sit amet sit amet ligula.",
-     category=category3)
+     category=category3,
+     user_id=1)
 
 session.add(item4)
 session.commit()
 
 item5 = Item(name="Baseball Bat", 
      description="Donec sed augue at eros bibendum aliquet in sit amet nunc. Maecenas fringilla dolor at sem lobortis, non porttitor felis lobortis. Integer non dolor vel neque eleifend consequat sit amet sit amet ligula.",
-     category=category3)
+     category=category3,
+     user_id=1)
 
 session.add(item5)
 session.commit()
 
 item6 = Item(name="Frisbee", 
      description="Donec sed augue at eros bibendum aliquet in sit amet nunc. Maecenas fringilla dolor at sem lobortis, non porttitor felis lobortis. Integer non dolor vel neque eleifend consequat sit amet sit amet ligula.",
-     category=category4)
+     category=category4,
+     user_id=1)
 
 session.add(item6)
 session.commit()
 
 item7 = Item(name="Snowboard", 
      description="Donec sed augue at eros bibendum aliquet in sit amet nunc. Maecenas fringilla dolor at sem lobortis, non porttitor felis lobortis. Integer non dolor vel neque eleifend consequat sit amet sit amet ligula.",
-     category=category5)
+     category=category5,
+     user_id=1)
 
 session.add(item7)
 session.commit()
 
 item8 = Item(name="Rock Climbing Gloves", 
      description="Donec sed augue at eros bibendum aliquet in sit amet nunc. Maecenas fringilla dolor at sem lobortis, non porttitor felis lobortis. Integer non dolor vel neque eleifend consequat sit amet sit amet ligula.",
-     category=category6)
+     category=category6,
+     user_id=1)
 
 session.add(item8)
 session.commit()
 
 item9 = Item(name="Foosball Ball", 
      description="Donec sed augue at eros bibendum aliquet in sit amet nunc. Maecenas fringilla dolor at sem lobortis, non porttitor felis lobortis. Integer non dolor vel neque eleifend consequat sit amet sit amet ligula.",
-     category=category7)
+     category=category7,
+     user_id=1)
 
 session.add(item9)
 session.commit()
 
 item10 = Item(name="Ice Skates", 
      description="Donec sed augue at eros bibendum aliquet in sit amet nunc. Maecenas fringilla dolor at sem lobortis, non porttitor felis lobortis. Integer non dolor vel neque eleifend consequat sit amet sit amet ligula.",
-     category=category8)
+     category=category8,
+     user_id=1)
 
 session.add(item10)
 session.commit()
 
 item11 = Item(name="Hockey Stick", 
      description="Donec sed augue at eros bibendum aliquet in sit amet nunc. Maecenas fringilla dolor at sem lobortis, non porttitor felis lobortis. Integer non dolor vel neque eleifend consequat sit amet sit amet ligula.",
-     category=category8)
+     category=category8,
+     user_id=1)
 
 session.add(item11)
 session.commit()
