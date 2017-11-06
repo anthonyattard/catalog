@@ -1,4 +1,4 @@
-from models import Base, Category, Item
+from models import Base, Category, Item, User
 from flask import Flask, jsonify, request, url_for, abort, g, render_template, redirect
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
@@ -112,6 +112,11 @@ def gconnect():
     login_session['username'] = data['name']
     login_session['email'] = data['email']
 
+    user_id = getUserID(login_session['email'])
+    if not user_id:
+        user_id = createUser(login_session)
+    login_session['user_id'] = user_id
+
     output = ''
     output += 'Welcome'
     flash("you are now logged in as %s" % login_session['username'])
@@ -146,6 +151,29 @@ def gdisconnect():
         response = make_response(json.dumps('Failed to revoke token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
         return response
+
+
+# User Functions
+def createUser(login_session):
+    newUser = User(name=login_session['username'],
+                   email=login_session['email'])
+    session.add(newUser)
+    session.commit()
+    user = session.query(User).filter_by(email=login_session['email']).one()
+    return user.id
+
+
+def getUserInfo(user_id):
+    user = session.query(User).filter_by(id=user.id).one()
+    return user
+
+
+def getUserID(email):
+    try:
+        user = session.query(User).filter_by(email=email).one()
+        return user.id
+    except:
+        return None
 
 
 @app.route('/')
@@ -188,7 +216,8 @@ def newItem():
 
         item = Item(name=request.form['name'],
                     description=request.form['description'],
-                    category=category)
+                    category=category,
+                    user_id=login_session['user_id'])
         session.add(item)
         session.commit()
 
