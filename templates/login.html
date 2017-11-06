@@ -40,10 +40,7 @@ function signInCallback(authResult) {
       success: function(result) {
         // Handle or verify the server response if necessary.
         if (result) {
-            $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
-            setTimeout(function() {
-              window.location.href = "/";
-            }, 4000);
+          window.location.href = "/";
 
         } else if (authResult['error']) {
             console.log('There was an error: ' + authResult['error']);
