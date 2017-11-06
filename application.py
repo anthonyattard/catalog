@@ -182,7 +182,7 @@ def showHome():
     categories = session.query(Category).all()
     items = session.query(Item).order_by(desc(Item.id)).limit(9)
 
-    return render_template('home.html', categories=categories, items=items)
+    return render_template('home.html', categories=categories, items=items, login_session=login_session)
 
 
 @app.route('/catalog/<string:category_name>/items')
@@ -206,7 +206,11 @@ def showItem(category_name, item_id):
 
 @app.route('/catalog/new', methods = ['GET', 'POST'])
 def newItem():
+    if 'username' not in login_session:
+        return redirect('/login')
+
     categories = session.query(Category).all()
+
     if request.method == 'GET':
         # This will render a form to add a new item
         return render_template('additem.html', categories=categories)
@@ -226,6 +230,9 @@ def newItem():
 
 @app.route('/catalog/<int:item_id>/edit', methods = ['GET', 'POST'])
 def editItem(item_id):
+    if 'username' not in login_session:
+        return redirect('/login')
+
     categories = session.query(Category).all()
     item = session.query(Item).filter_by(id=item_id).one()
     if request.method == 'GET':
@@ -249,6 +256,9 @@ def editItem(item_id):
 
 @app.route('/catalog/<item_id>/delete', methods = ['GET', 'POST'])
 def deleteItem(item_id):
+    if 'username' not in login_session:
+        return redirect('/login')
+
     item = session.query(Item).filter_by(id=item_id).one()
 
     if request.method == 'GET':
