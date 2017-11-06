@@ -5,9 +5,12 @@ from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
 from sqlalchemy import desc
 
-engine = create_engine('sqlite:///catalog.db')
+from flask import session as login_session
+import random, string
 
+engine = create_engine('sqlite:///catalog.db')
 Base.metadata.bind = engine
+
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 app = Flask(__name__)
