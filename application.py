@@ -16,6 +16,13 @@ session = DBSession()
 app = Flask(__name__)
 
 
+# Create anti-forgery state token
+@app.route('/login')
+def showLogin():
+    state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
+    login_session['state'] = state
+
+
 @app.route('/')
 def showHome():
     """This will show all categories with the latest items"""
@@ -117,6 +124,7 @@ def itemJSON(category, item_name):
 
 if __name__ == '__main__':
     app.debug = True
+    app.secret_key = 'super_secret_key'
     #app.config['SECRET_KEY'] = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
     app.run(host='0.0.0.0', port=5000)
     
