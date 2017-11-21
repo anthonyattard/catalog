@@ -10,7 +10,8 @@
   {% endif %}
   {% for item in items %}
   <p>
-    <a href="{{ url_for('showItem', category_name=item.category.name, item_id=item.id) }}">{{ item.name }}</a>
+    <a href="{{ url_for('showItem', category_name=item.category.name, item_id=item.id) }}">{{ item.name }} </a>
+    <i>({{ item.category.name|title|replace("-", " ") }})</i>
   </p>
   {% endfor %}
 </div>
