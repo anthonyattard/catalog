@@ -4,7 +4,7 @@
   {% include "categorysidebar.html" %}
 </div>
 <div class="col-sm-8">
-  <h1>{{ category.name }} Items ({{ items|length }} items)</h1>
+  <h1>{{ category.name|title|replace("-", " ") }} Items ({{ items|length }} items)</h1>
   {% for item in items %}
   <p>
     <a href="{{ url_for('showItem', category_name=item.category.name, item_id=item.id) }}">{{ item.name }}</a>

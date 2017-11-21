@@ -13,7 +13,7 @@
       <div class="select">
         <select name="category">
         {% for category in categories %}
-            <option value="{{ category.name }}"{% if item.category == category %}selected="selected"{% endif %}>{{ category.name }}</option>
+            <option value="{{ category.name }}"{% if item.category == category %}selected="selected"{% endif %}>{{ category.name|title|replace("-", " ") }}</option>
         {% endfor %}
         </select>
       </div>

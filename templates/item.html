@@ -9,6 +9,6 @@
     <a href="{{ url_for('deleteItem', item_id=item.id) }}">Delete</a>
   </p>
   {% endif %}
-  <p><i>Category: <a href="{{ url_for('showCategory', category_name=item.category.name) }}">{{ item.category.name }}</a></i></p>
+  <p><i>Category: <a href="{{ url_for('showCategory', category_name=item.category.name) }}">{{ item.category.name|title|replace("-", " ") }}</a></i></p>
 </div>
 {% endblock %}
