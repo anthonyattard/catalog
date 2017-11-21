@@ -235,6 +235,12 @@ def editItem(item_id):
 
     categories = session.query(Category).all()
     item = session.query(Item).filter_by(id=item_id).one()
+
+    # Checks if the current user is not the owner of the item
+    if login_session['user_id'] != item.user_id:
+        flash("You're not authorized to edit this item")
+        return redirect('/')
+
     if request.method == 'GET':
         # This will render a form to edit an item
         return render_template('edititem.html', categories=categories, item=item)
@@ -260,6 +266,11 @@ def deleteItem(item_id):
         return redirect('/login')
 
     item = session.query(Item).filter_by(id=item_id).one()
+
+    # Checks if the current user is not the owner of the item
+    if login_session['user_id'] != item.user_id:
+        flash("You're not authorized to delete this item")
+        return redirect('/')
 
     if request.method == 'GET':
         # This will render a form to delete an item
