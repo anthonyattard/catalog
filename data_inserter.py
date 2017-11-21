@@ -150,6 +150,14 @@ item12 = Item(name="Field Hockey Ball",
 session.add(item12)
 session.commit()
 
+item13 = Item(name="Ice Skate Laces", 
+     description="Donec sed augue at eros bibendum aliquet in sit amet nunc. Maecenas fringilla dolor at sem lobortis, non porttitor felis lobortis. Integer non dolor vel neque eleifend consequat sit amet sit amet ligula.",
+     category=category7,
+     user_id=2)
+
+session.add(item13)
+session.commit()
+
 
 
 
