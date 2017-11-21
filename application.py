@@ -143,6 +143,7 @@ def gdisconnect():
     if result['status'] == '200':
         del login_session['access_token']
         del login_session['gplus_id']
+        del login_session['user_id']
         del login_session['username']
         del login_session['email']
         flash("Successfully logged out.")
