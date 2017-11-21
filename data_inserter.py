@@ -50,6 +50,10 @@ category8 = Category(name="hockey")
 session.add(category8)
 session.commit()
 
+category9 = Category(name="field-hockey")
+session.add(category9)
+session.commit()
+
 item1 = Item(name="Soccer Ball", 
      description="For practice or the big game, you need to be quick on your feet. Lace up the Nike Men Vapor Varsity Low TD Football Cleats and step out on the gridiron youll be ready to charge down the field in comfort and style.",
      category=category1,
@@ -136,6 +140,14 @@ item11 = Item(name="Hockey Stick",
      user_id=1)
 
 session.add(item11)
+session.commit()
+
+item12 = Item(name="Field Hockey Ball", 
+     description="Donec sed augue at eros bibendum aliquet in sit amet nunc. Maecenas fringilla dolor at sem lobortis, non porttitor felis lobortis. Integer non dolor vel neque eleifend consequat sit amet sit amet ligula.",
+     category=category9,
+     user_id=1)
+
+session.add(item12)
 session.commit()
 
 
