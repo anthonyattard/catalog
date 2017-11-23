@@ -120,7 +120,7 @@ def gconnect():
 
     output = ''
     output += 'Welcome'
-    flash("you are now logged in as %s" % login_session['username'])
+    flash("Now logged in as %s" % login_session['username'])
     return output
 
 
