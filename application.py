@@ -118,11 +118,8 @@ def gconnect():
         user_id = createUser(login_session)
     login_session['user_id'] = user_id
 
-    output = ''
-    output += 'Welcome'
     flash("Now logged in as %s" % login_session['username'])
-    return output
-
+    return "You have been logged in"
 
 # Google Logout
 @app.route('/gdisconnect')
@@ -141,6 +138,7 @@ def gdisconnect():
     result = h.request(url, 'GET')[0]
     print 'result is '
     print result
+    return "You have been logged out"
 
 
 @app.route('/fbconnect', methods=['POST'])
@@ -192,12 +190,9 @@ def fbconnect():
         user_id = createUser(login_session)
     login_session['user_id'] = user_id    
 
-    output = ''
-    output += 'Welcome'
     flash("Now logged in as %s" % login_session['username'])
     print login_session
-    return output
-
+    return "You have been logged in"
 
 @app.route('/fbdisconnect')
 def fbdisconnect():
@@ -207,7 +202,7 @@ def fbdisconnect():
     url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id, access_token)
     h = httplib2.Http()
     result = h.request(url, 'DELETE')[1]
-    return "you have been logged out"
+    return "You have been logged out"
 
 
 # Disconnect based on provider
