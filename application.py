@@ -365,7 +365,17 @@ def deleteItem(item_id):
 
 @app.route('/catalog.json')
 def catalogJSON():
-    return "This will return the catalog in JSON format"
+    """This will return the catalog in JSON format"""
+    output_json = []
+    categories = session.query(Category).all()
+    for category in categories:
+        items = session.query(Item).filter_by(category_id=category.id)
+        category_output = {}
+        category_output["id"] = category.id
+        category_output["name"] = category.name
+        category_output["items"] = [i.serialize for i in items]
+        output_json.append(category_output)
+    return jsonify(Categories=output_json)
 
 
 @app.route('/catalog/<category>.json')
