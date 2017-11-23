@@ -35,6 +35,7 @@ app.config['GOOGLE_CLIENT_SECRET'] = config.GOOGLE_CLIENT_SECRET
 # Create anti-forgery state token
 @app.route('/login')
 def showLogin():
+    """Show Login Page"""
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
     login_session['state'] = state
 
@@ -284,7 +285,8 @@ def showItem(category_name, item_id):
 @app.route('/catalog/new', methods = ['GET', 'POST'])
 def newItem():
     if 'username' not in login_session:
-        return redirect('/login')
+        flash("Please login to create a new item")
+        return redirect(url_for('showLogin'))
 
     categories = session.query(Category).all()
 
@@ -308,7 +310,8 @@ def newItem():
 @app.route('/catalog/<int:item_id>/edit', methods = ['GET', 'POST'])
 def editItem(item_id):
     if 'username' not in login_session:
-        return redirect('/login')
+        flash("If you are the item owner, please login to edit this item")
+        return redirect(url_for('showLogin'))
 
     categories = session.query(Category).all()
     item = session.query(Item).filter_by(id=item_id).one()
@@ -316,7 +319,7 @@ def editItem(item_id):
     # Checks if the current user is not the owner of the item
     if login_session['user_id'] != item.user_id:
         flash("You're not authorized to edit this item")
-        return redirect('/')
+        return redirect(url_for('showHome'))
 
     if request.method == 'GET':
         # This will render a form to edit an item
@@ -340,14 +343,15 @@ def editItem(item_id):
 @app.route('/catalog/<item_id>/delete', methods = ['GET', 'POST'])
 def deleteItem(item_id):
     if 'username' not in login_session:
-        return redirect('/login')
+        flash("If you are the item owner, please login to delete this item")
+        return redirect(url_for('showLogin'))
 
     item = session.query(Item).filter_by(id=item_id).one()
 
     # Checks if the current user is not the owner of the item
     if login_session['user_id'] != item.user_id:
         flash("You're not authorized to delete this item")
-        return redirect('/')
+        return redirect(url_for('showHome'))
 
     if request.method == 'GET':
         # This will render a form to delete an item
