@@ -236,6 +236,31 @@ def fbdisconnect():
     return "you have been logged out"
 
 
+# Disconnect based on provider
+@app.route('/disconnect')
+def disconnect():
+    print login_session
+    if 'provider' in login_session:
+        if login_session['provider'] == 'google':
+            gdisconnect()
+            del login_session['gplus_id']
+        if login_session['provider'] == 'facebook':
+            fbdisconnect()
+            del login_session['facebook_id']
+        del login_session['username']
+        del login_session['email']
+        del login_session['picture']
+        del login_session['user_id']
+        del login_session['provider']
+        del login_session['access_token']
+        flash("You have successfully been logged out.")
+        print login_session
+        return redirect(url_for('showHome'))
+    else:
+        flash("You were not logged in")
+        return redirect(url_for('showHome'))
+
+
 # User Functions
 def createUser(login_session):
     newUser = User(name=login_session['username'],
