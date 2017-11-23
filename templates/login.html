@@ -40,8 +40,7 @@ function signInCallback(authResult) {
       success: function(result) {
         // Handle or verify the server response if necessary.
         if (result) {
-          window.location.href = "/";
-
+            window.location.href = "/";
         } else if (authResult['error']) {
             console.log('There was an error: ' + authResult['error']);
         } else {
