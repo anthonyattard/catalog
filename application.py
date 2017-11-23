@@ -27,6 +27,7 @@ CLIENT_ID = json.loads(
     open('google_auth.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Catalog App"
 
+# Config variables used to access the variables in the templates
 app.config['GOOGLE_CLIENT_ID'] = config.GOOGLE_CLIENT_ID
 app.config['GOOGLE_CLIENT_SECRET'] = config.GOOGLE_CLIENT_SECRET
 
@@ -40,9 +41,9 @@ def showLogin():
     return render_template('login.html', STATE=state)
 
 
-# Google Login
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
+    """Google Login"""
     # Validate state token
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
@@ -121,9 +122,10 @@ def gconnect():
     flash("Now logged in as %s" % login_session['username'])
     return "You have been logged in"
 
-# Google Logout
+
 @app.route('/gdisconnect')
 def gdisconnect():
+    """Google Logout"""
     access_token = login_session.get('access_token')
     if access_token is None:
         print 'Access Token is None'
@@ -143,6 +145,7 @@ def gdisconnect():
 
 @app.route('/fbconnect', methods=['POST'])
 def fbconnect():
+    """Facebook Login"""
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
         response.headers['Content-Type'] = 'application/json'
@@ -194,8 +197,10 @@ def fbconnect():
     print login_session
     return "You have been logged in"
 
+
 @app.route('/fbdisconnect')
 def fbdisconnect():
+    """Facebook Logout"""
     facebook_id = login_session['facebook_id']
     # The access token must me included to successfully logout
     access_token = login_session['access_token']
@@ -205,9 +210,9 @@ def fbdisconnect():
     return "You have been logged out"
 
 
-# Disconnect based on provider
 @app.route('/disconnect')
 def disconnect():
+    """Disconnect based on provider"""
     if 'provider' in login_session:
         if login_session['provider'] == 'google':
             gdisconnect()
