@@ -109,6 +109,7 @@ def gconnect():
 
     data = answer.json()
 
+    login_session['provider'] = 'google'
     login_session['username'] = data['name']
     login_session['email'] = data['email']
 
@@ -140,18 +141,6 @@ def gdisconnect():
     result = h.request(url, 'GET')[0]
     print 'result is '
     print result
-    if result['status'] == '200':
-        del login_session['access_token']
-        del login_session['gplus_id']
-        del login_session['user_id']
-        del login_session['username']
-        del login_session['email']
-        flash("Successfully logged out.")
-        return redirect(url_for('showHome'))
-    else:
-        response = make_response(json.dumps('Failed to revoke token for given user.', 400))
-        response.headers['Content-Type'] = 'application/json'
-        return response
 
 
 @app.route('/fbconnect', methods=['POST'])
@@ -224,7 +213,6 @@ def fbdisconnect():
 # Disconnect based on provider
 @app.route('/disconnect')
 def disconnect():
-    print login_session
     if 'provider' in login_session:
         if login_session['provider'] == 'google':
             gdisconnect()
@@ -238,7 +226,6 @@ def disconnect():
         del login_session['provider']
         del login_session['access_token']
         flash("You have successfully been logged out.")
-        print login_session
         return redirect(url_for('showHome'))
     else:
         flash("You were not logged in")
