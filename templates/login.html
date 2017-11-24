@@ -8,8 +8,7 @@
 {% block content %}
 <div class="col-sm-12">
   <h1>Login</h1>
-  <!-- GOOGLE SIGN IN-->
-  <!-- GOOGLE PLUS SIGN IN BUTTON-->
+  <!-- GOOGLE SIGN IN BUTTON-->
   <div id="signinButton">
     <span class="g-signin"
       data-scope="openid email"
@@ -21,10 +20,17 @@
       data-approvalprompt="force">
     </span>
   </div>
-  <!--END GOOGLE PLUS SIGN IN BUTTON -->
+  <!--END GOOGLE SIGN IN BUTTON -->
+  <!-- FACEBOOK SIGN IN BUTTON-->
+  <fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();">
+  <a href='javascript:sendTokenToServer()'>Login with Facebook</a>
+  </fb:login-button>
+  <!--END FACEBOOK SIGN IN BUTTON-->
 </div>
 <div id="result"></div>
 
+
+<!-- GOOGLE SIGN IN SCRIPT-->
 <script>
 function signInCallback(authResult) {
   if (authResult['code']) {
@@ -51,9 +57,9 @@ function signInCallback(authResult) {
   }
 }
 </script>
-<!--END GOOGLE SIGN IN -->
+<!--END GOOGLE SIGN IN SCRIPT-->
 
-<!--FACEBOOK SIGN IN -->
+<!--FACEBOOK SIGN IN SCRIPT-->
 <script>
 window.fbAsyncInit = function() {
   FB.init({
@@ -98,9 +104,5 @@ function sendTokenToServer() {
  });
 }
 </script>
-
-<fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();">
-  <a href='javascript:sendTokenToServer()'>Login with Facebook</a>
-</fb:login-button>
-<!--END FACEBOOK SIGN IN -->
+<!--END FACEBOOK SIGN IN SCRIPT-->
 {% endblock %}
