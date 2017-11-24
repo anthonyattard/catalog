@@ -399,9 +399,18 @@ def categoryJSON(category_name):
         return jsonify(Category=output_json)
 
 
-@app.route('/catalog/<category>/<item_name>.json')
-def itemJSON(category, item_name):
-    return "This will return an item in JSON format"
+@app.route('/catalog/<string:category_name>/<int:item_id>.json')
+def itemJSON(category_name, item_id):
+    """This will return an item in JSON format"""
+
+    # Check to see if the item exists
+    try:
+        category = session.query(Category).filter_by(name=category_name).one()
+        item = session.query(Item).filter_by(id=item_id, category=category).one()
+
+        return jsonify(Item=[item.serialize])
+    except:
+        return jsonify(Item=[])
 
 
 if __name__ == '__main__':
