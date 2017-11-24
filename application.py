@@ -1,19 +1,19 @@
-from models import Base, Category, Item, User
-from flask import Flask, jsonify, request, url_for, abort, g, render_template, redirect
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, sessionmaker
-from sqlalchemy import create_engine
-from sqlalchemy import desc
-from flask import session as login_session
-import random, string
 import config
-from oauth2client.client import flow_from_clientsecrets
-from oauth2client.client import FlowExchangeError
-import httplib2
 import json
-from flask import make_response, flash
+import random
+import string
+
 import requests
 
+import httplib2
+from flask import session as login_session
+from flask import (Flask, abort, flash, g, jsonify, make_response, redirect,
+                   render_template, request, url_for)
+from models import Base, Category, Item, User
+from oauth2client.client import FlowExchangeError, flow_from_clientsecrets
+from sqlalchemy import create_engine, desc
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship, sessionmaker
 
 app = Flask(__name__)
 
