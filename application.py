@@ -265,6 +265,7 @@ def showHome():
 
 @app.route('/catalog')
 def catalogRedirect():
+    """This will redirect /catalog to showHome()"""
     return redirect(url_for('showHome'), code=301)
 
 
