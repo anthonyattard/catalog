@@ -369,7 +369,7 @@ def deleteItem(item_id):
         return redirect(url_for('showHome'))
 
 
-@app.route('/catalog.json')
+@app.route('/api/catalog')
 def catalogJSON():
     """This will return the catalog in JSON format"""
     output_json = []
@@ -384,7 +384,7 @@ def catalogJSON():
     return jsonify(Categories=output_json)
 
 
-@app.route('/catalog/<string:category_name>.json')
+@app.route('/api/catalog/<string:category_name>')
 def categoryJSON(category_name):
     """This will return a specific category and its items in JSON format"""
     output_json = []
@@ -405,7 +405,7 @@ def categoryJSON(category_name):
         return jsonify(Category=output_json)
 
 
-@app.route('/catalog/<string:category_name>/<int:item_id>.json')
+@app.route('/api/catalog/<string:category_name>/<int:item_id>')
 def itemJSON(category_name, item_id):
     """This will return an item in JSON format"""
 
