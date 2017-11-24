@@ -263,6 +263,11 @@ def showHome():
     return render_template('home.html', categories=categories, items=items, login_session=login_session)
 
 
+@app.route('/catalog')
+def catalogRedirect():
+    return redirect(url_for('showHome'), code=301)
+
+
 @app.route('/catalog/<string:category_name>/items')
 def showCategory(category_name):
     """This will show all items in a category"""
