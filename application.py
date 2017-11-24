@@ -373,7 +373,7 @@ def catalogJSON():
         category_output = {}
         category_output["id"] = category.id
         category_output["name"] = category.name
-        category_output["items"] = [i.serialize for i in items]
+        category_output["Item"] = [i.serialize for i in items]
         output_json.append(category_output)
     return jsonify(Categories=output_json)
 
@@ -391,7 +391,7 @@ def categoryJSON(category_name):
         category_output = {}
         category_output["id"] = category.id
         category_output["name"] = category.name
-        category_output["items"] = [item.serialize for item in items]
+        category_output["Item"] = [item.serialize for item in items]
         output_json.append(category_output)
 
         return jsonify(Category=output_json)
