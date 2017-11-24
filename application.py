@@ -383,6 +383,7 @@ def categoryJSON(category_name):
     """This will return a specific category and its items in JSON format"""
     output_json = []
 
+    # Check to see if category and category items exist
     try:
         category = session.query(Category).filter_by(name=category_name).one()
         items = session.query(Item).filter_by(category_id=category.id)
@@ -395,7 +396,7 @@ def categoryJSON(category_name):
 
         return jsonify(Category=output_json)
     except:
-        return jsonify(Category=[])
+        return jsonify(Category=output_json)
 
 
 @app.route('/catalog/<category>/<item_name>.json')
