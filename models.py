@@ -1,11 +1,11 @@
 import os
+import random
+import string
 import sys
-from sqlalchemy import Column,Integer,String
-from sqlalchemy import ForeignKey
+
+from sqlalchemy import Column, ForeignKey, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
-from sqlalchemy import create_engine
-import random, string
 
 Base = declarative_base()
 
@@ -57,4 +57,3 @@ engine = create_engine('sqlite:///catalog.db')
  
 
 Base.metadata.create_all(engine)
-    
