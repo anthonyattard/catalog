@@ -4,12 +4,12 @@
 <form action="#" method="post">
   <div class="form-group">
     <label for="name">Name:</label>
-    <input type="text" maxlength="50" class="form-control" name="name" placeholder="Name of the item">
+    <input type="text" maxlength="50" class="form-control mb-1" name="name" placeholder="Name of the item">
 
     <label for="description">Description:</label>
-    <textarea class="form-control" maxlength="250" rows="3" name="description" placeholder="Description of the item"></textarea>
+    <textarea class="form-control mb-1" maxlength="250" rows="3" name="description" placeholder="Description of the item"></textarea>
     
-    <div class="select">
+    <div class="select mb-1">
       <select name="category">
       {% for category in categories %}
           <option value="{{ category.name }}">{{ category.name|title|replace("-", " ") }}</option>

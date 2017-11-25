@@ -50,6 +50,10 @@ i {
     color: #7A7573;
 }
 
+.mb-1 {
+  margin-bottom: 1em;
+}
+
 .navbar-btn {
     background-color: #e64a19;
     border-color: #e64a19;

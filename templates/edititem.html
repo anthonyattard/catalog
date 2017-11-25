@@ -4,18 +4,19 @@
 <form action="{{ url_for('editItem', item_id=item.id )}}" method="post">
   <div class="form-group">
     <label for="name">Name:</label>
-    <input type="text" maxlength="50" class="form-control" name="name" placeholder="Name of the item" value="{{ item.name }}">
+    <input type="text" maxlength="50" class="form-control mb-1" name="name" placeholder="Name of the item" value="{{ item.name }}">
 
     <label for="description">Description:</label>
-    <textarea class="form-control" maxlength="250" rows="3" name="description" placeholder="Description of the item">{{ item.description }}</textarea>
+    <textarea class="form-control mb-1" maxlength="250" rows="3" name="description" placeholder="Description of the item">{{ item.description }}</textarea>
     
-    <div class="select">
+    <div class="select mb-1">
       <select name="category">
       {% for category in categories %}
           <option value="{{ category.name }}"{% if item.category == category %}selected="selected"{% endif %}>{{ category.name|title|replace("-", " ") }}</option>
       {% endfor %}
       </select>
     </div>
+
     <button type="submit" class="btn btn-default" id="submit" type="submit">Update</button>
   </div>
 </form>
