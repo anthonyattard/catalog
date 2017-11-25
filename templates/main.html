@@ -32,7 +32,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{{ url_for('showHome') }}">Catalog App</a>
+          <a class="navbar-brand" id="site-name" href="{{ url_for('showHome') }}">Catalog App</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -57,7 +57,7 @@
       {% endwith %}
     </div>
 
-    <div class="container">
+    <div class="container" id="main-content">
       {% block content %}
       {% endblock %}
     </div>

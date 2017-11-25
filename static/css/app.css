@@ -1,5 +1,15 @@
+* {
+    font-weight: 700;
+}
+
 body {
   padding-top: 50px;
+  background-color: #dddddd;
+}
+
+#main-content {
+    background-color: white;
+    margin-top: 1.65em;
 }
 
 .flash {
@@ -11,4 +21,32 @@ body {
 .flash li {
     list-style-type: none;
     text-align: center;
+}
+
+.navbar {
+    background-color: #03203F;
+}
+
+#site-name {
+    color: #FFFFFF;
+}
+
+h1 {
+    color: #032146;
+}
+
+a {
+    font-size: 14px;
+    color: #e64a19;
+    line-height: 17px;
+}
+
+i {
+    color: #7A7573;
+}
+
+.navbar-btn {
+    background-color: #e64a19;
+    border-color: #e64a19;
+    color: #FFFFFF;
 }
