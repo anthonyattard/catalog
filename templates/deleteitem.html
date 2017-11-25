@@ -1,9 +1,11 @@
 {% extends "main.html" %}
 {% block content %}
-<h1>Delete Item</h1>
-<p>Are you sure you want to delete {{item.name}}?</p>
+<div class="col-sm-6">
+  <h1>Delete Item</h1>
+  <p>Are you sure you want to delete {{item.name}}?</p>
 
-<form action="#" method="post">
-  <button type="submit" class="btn btn-danger" id="submit" type="submit">Delete</button>
-</form>
+  <form action="#" method="post">
+    <button type="submit" class="btn btn-danger" id="submit" type="submit">Delete</button>
+  </form>
+</div>
 {% endblock %}

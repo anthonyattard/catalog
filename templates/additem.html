@@ -1,22 +1,24 @@
 {% extends "main.html" %}
 {% block content %}
 <h1>Add Item</h1>
-<form action="#" method="post">
-  <div class="form-group">
-    <label for="name">Name:</label>
-    <input type="text" maxlength="50" class="form-control mb-1" name="name" placeholder="Name of the item">
+<div class="row col-sm-6">
+  <form action="#" method="post">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" maxlength="50" class="form-control mb-1" name="name" placeholder="Name of the item">
 
-    <label for="description">Description:</label>
-    <textarea class="form-control mb-1" maxlength="250" rows="3" name="description" placeholder="Description of the item"></textarea>
-    
-    <div class="select mb-1">
-      <select name="category">
-      {% for category in categories %}
-          <option value="{{ category.name }}">{{ category.name|title|replace("-", " ") }}</option>
-      {% endfor %}
-      </select>
+      <label for="description">Description:</label>
+      <textarea class="form-control mb-1" maxlength="250" rows="3" name="description" placeholder="Description of the item"></textarea>
+      
+      <div class="select mb-1">
+        <select name="category">
+        {% for category in categories %}
+            <option value="{{ category.name }}">{{ category.name|title|replace("-", " ") }}</option>
+        {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn btn-default" id="submit" type="submit">Create</button>
     </div>
-    <button type="submit" class="btn btn-default" id="submit" type="submit">Create</button>
-  </div>
-</form>
+  </form>
+</div>
 {% endblock %}
