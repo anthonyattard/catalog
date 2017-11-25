@@ -7,9 +7,14 @@ body {
   background-color: #dddddd;
 }
 
-#main-content {
+#main-container {
     background-color: white;
     margin-top: 1.65em;
+    margin-bottom: 40px;
+}
+
+#main-grid {
+    margin-bottom: 1em;
 }
 
 .flash {
