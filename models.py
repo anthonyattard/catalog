@@ -27,8 +27,8 @@ class Category(Base):
     def serialize(self):
         """Return object data in easily serializeable format"""
         return {
-        'id' : self.id,
-        'name' : self.name
+            'id': self.id,
+            'name': self.name
         }
 
 
@@ -37,7 +37,7 @@ class Item(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     description = Column(String)
-    category_id = Column(Integer,ForeignKey('category.id'))
+    category_id = Column(Integer, ForeignKey('category.id'))
     category = relationship(Category)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
@@ -46,14 +46,13 @@ class Item(Base):
     def serialize(self):
         """Return object data in easily serializeable format"""
         return {
-        'name' : self.name,
-        'description' : self.description,
-        'id' : self.id,
-        'category_id' : self.category_id
+            'name': self.name,
+            'description': self.description,
+            'id': self.id,
+            'category_id': self.category_id
         }
 
 
 engine = create_engine('sqlite:///catalog.db')
- 
 
 Base.metadata.create_all(engine)
