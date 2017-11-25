@@ -1,14 +1,12 @@
 {% extends "main.html" %}
 {% block content %}
-<div class="col-sm-12">
-  <h1>{{ item.name }}</h1>
-  <p>Description: {{ item.description }}</p>
-  {% if session.user_id == item.user_id %}
-  <p>
-    <a href="{{ url_for('editItem', item_id=item.id) }}">Edit |</a>
-    <a href="{{ url_for('deleteItem', item_id=item.id) }}">Delete</a>
-  </p>
-  {% endif %}
-  <p><i>Category: <a href="{{ url_for('showCategory', category_name=item.category.name) }}">{{ item.category.name|title|replace("-", " ") }}</a></i></p>
-</div>
+<h1>{{ item.name }}</h1>
+<p>Description: {{ item.description }}</p>
+{% if session.user_id == item.user_id %}
+<p>
+  <a href="{{ url_for('editItem', item_id=item.id) }}">Edit |</a>
+  <a href="{{ url_for('deleteItem', item_id=item.id) }}">Delete</a>
+</p>
+{% endif %}
+<p><i>Category: <a href="{{ url_for('showCategory', category_name=item.category.name) }}">{{ item.category.name|title|replace("-", " ") }}</a></i></p>
 {% endblock %}
