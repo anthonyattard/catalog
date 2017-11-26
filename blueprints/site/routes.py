@@ -80,7 +80,9 @@ def newItem():
             session.add(item)
             session.commit()
 
-            return redirect(url_for('site.showHome'))
+            return redirect(url_for(
+                            'site.showItem',
+                            category_name=item.category.name, item_id=item.id))
         else:
             # This will run if the form fails validation
             return render_template('newitem.html',
