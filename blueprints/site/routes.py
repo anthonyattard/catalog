@@ -8,11 +8,6 @@ from sqlalchemy import desc
 site = Blueprint('site', __name__)
 
 
-@site.route('/homepage')
-def homepage():
-    return "<h1>homepage</h1>"
-
-
 @site.route('/')
 def showHome():
     """This will show all categories with the latest items"""
