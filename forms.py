@@ -1,5 +1,6 @@
-from wtforms import (Form, StringField, TextAreaField, 
+from wtforms import (Form, StringField, TextAreaField,
                      SelectField, validators)
+
 
 class ItemForm(Form):
     name = StringField('Name', [

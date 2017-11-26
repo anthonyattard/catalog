@@ -4,6 +4,7 @@ from models import Category, Item
 
 api = Blueprint('api', __name__)
 
+
 @api.route('/catalog')
 def catalogJSON():
     """This will return the catalog in JSON format"""

@@ -7,6 +7,7 @@ from sqlalchemy import desc
 
 site = Blueprint('site', __name__)
 
+
 @site.route('/homepage')
 def homepage():
     return "<h1>homepage</h1>"
@@ -63,7 +64,8 @@ def newItem():
 
     if request.method == 'GET':
         # This will render a form to add a new item
-        return render_template('newitem.html', categories=categories, form=form)
+        return render_template('newitem.html',
+                               categories=categories, form=form)
     if request.method == 'POST':
         # This checks whether the form passes validation
         if form.validate():
@@ -81,8 +83,8 @@ def newItem():
             return redirect(url_for('site.showHome'))
         else:
             # This will run if the form fails validation
-            return render_template('newitem.html', categories=categories, form=form)
-
+            return render_template('newitem.html',
+                                   categories=categories, form=form)
 
 
 @site.route('/catalog/<int:item_id>/edit', methods=['GET', 'POST'])
