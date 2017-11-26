@@ -7,7 +7,7 @@
   <h1>{{ category.name|title|replace("-", " ") }} Items ({{ items|length }} items)</h1>
   {% for item in items %}
   <p>
-    <a href="{{ url_for('showItem', category_name=item.category.name, item_id=item.id) }}">{{ item.name }}</a>
+    <a href="{{ url_for('site.showItem', category_name=item.category.name, item_id=item.id) }}">{{ item.name }}</a>
   </p>
   {% endfor %}
 </div>

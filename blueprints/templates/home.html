@@ -6,11 +6,11 @@
 <div class="col-sm-8">
   <h1>Latest Items</h1>
   {% if session.user_id %}
-  <p><i><a href="{{ url_for('newItem') }}">Add Item</a></i></p>
+  <p><i><a href="{{ url_for('site.newItem') }}">Add Item</a></i></p>
   {% endif %}
   {% for item in items %}
   <p>
-    <a href="{{ url_for('showItem', category_name=item.category.name, item_id=item.id) }}">{{ item.name }} </a>
+    <a href="{{ url_for('site.showItem', category_name=item.category.name, item_id=item.id) }}">{{ item.name }} </a>
     <i>({{ item.category.name|title|replace("-", " ") }})</i>
   </p>
   {% endfor %}

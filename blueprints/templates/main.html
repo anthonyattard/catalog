@@ -33,14 +33,14 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" id="site-name" href="{{ url_for('showHome') }}">Catalog App</a>
+          <a class="navbar-brand" id="site-name" href="{{ url_for('site.showHome') }}">Catalog App</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             {% if session.user_id %}
-            <a href="{{ url_for('disconnect') }}"><button type="button" class="btn btn-orange navbar-btn">Logout</button></a>
+            <a href="{{ url_for('authc.disconnect') }}"><button type="button" class="btn btn-orange navbar-btn">Logout</button></a>
             {% else %}
-            <a href="{{ url_for('showLogin') }}"><button type="button" class="btn btn-orange navbar-btn">Login</button></a>
+            <a href="{{ url_for('authc.showLogin') }}"><button type="button" class="btn btn-orange navbar-btn">Login</button></a>
             {% endif %}
         </div>
       </div>

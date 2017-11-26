@@ -1,3 +1,5 @@
+from flask import Blueprint
+
 import config
 import json
 import random
@@ -16,25 +18,14 @@ from sqlalchemy import create_engine, desc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 
-app = Flask(__name__)
+from blueprints import app
+from blueprints import session
 
-engine = create_engine('sqlite:///catalog.db')
-Base.metadata.bind = engine
-
-DBSession = sessionmaker(bind=engine)
-session = DBSession()
-
-CLIENT_ID = json.loads(
-    open('google_auth.json', 'r').read())['web']['client_id']
-APPLICATION_NAME = "Catalog App"
-
-# Config variables used to access the variables in the templates
-app.config['GOOGLE_CLIENT_ID'] = config.GOOGLE_CLIENT_ID
-app.config['GOOGLE_CLIENT_SECRET'] = config.GOOGLE_CLIENT_SECRET
+authc = Blueprint('authc', __name__)
 
 
 # Create anti-forgery state token
-@app.route('/login')
+@authc.route('/login')
 def showLogin():
     """Show Login Page"""
     state = ''.join(
@@ -45,7 +36,7 @@ def showLogin():
     return render_template('login.html', STATE=state)
 
 
-@app.route('/gconnect', methods=['POST'])
+@authc.route('/gconnect', methods=['POST'])
 def gconnect():
     """Google Login"""
     # Validate state token
@@ -88,7 +79,7 @@ def gconnect():
         return response
 
     # Verify that the access token is valid for this app.
-    if result['issued_to'] != CLIENT_ID:
+    if result['issued_to'] != app.config['GOOGLE_CLIENT_ID']:
         response = make_response(
             json.dumps("Token's client ID does not match app's."), 401)
         print "Token's client ID does not match app's."
@@ -127,7 +118,7 @@ def gconnect():
     return "You have been logged in"
 
 
-@app.route('/gdisconnect')
+@authc.route('/gdisconnect')
 def gdisconnect():
     """Google Logout"""
     access_token = login_session.get('access_token')
@@ -149,7 +140,7 @@ def gdisconnect():
     return "You have been logged out"
 
 
-@app.route('/fbconnect', methods=['POST'])
+@authc.route('/fbconnect', methods=['POST'])
 def fbconnect():
     """Facebook Login"""
     if request.args.get('state') != login_session['state']:
@@ -207,7 +198,7 @@ def fbconnect():
     return "You have been logged in"
 
 
-@app.route('/fbdisconnect')
+@authc.route('/fbdisconnect')
 def fbdisconnect():
     """Facebook Logout"""
     facebook_id = login_session['facebook_id']
@@ -220,7 +211,7 @@ def fbdisconnect():
     return "You have been logged out"
 
 
-@app.route('/disconnect')
+@authc.route('/disconnect')
 def disconnect():
     """Disconnect based on provider"""
     if 'provider' in login_session:
@@ -236,10 +227,10 @@ def disconnect():
         del login_session['provider']
         del login_session['access_token']
         flash("You have successfully been logged out.")
-        return redirect(url_for('showHome'))
+        return redirect(url_for('site.showHome'))
     else:
         flash("You were not logged in")
-        return redirect(url_for('showHome'))
+        return redirect(url_for('site.showHome'))
 
 
 # User Functions
@@ -263,206 +254,3 @@ def getUserID(email):
         return user.id
     except:
         return None
-
-
-@app.route('/')
-def showHome():
-    """This will show all categories with the latest items"""
-    categories = session.query(Category).all()
-    items = session.query(Item).order_by(desc(Item.id)).limit(9)
-
-    return render_template(
-           'home.html', categories=categories,
-           items=items, login_session=login_session)
-
-
-@app.route('/catalog')
-def catalogRedirect():
-    """This will redirect /catalog to showHome()"""
-    return redirect(url_for('showHome'), code=301)
-
-
-@app.route('/catalog/<string:category_name>/items')
-def showCategory(category_name):
-    """This will show all items in a category"""
-    categories = session.query(Category).all()
-    category = session.query(Category).filter_by(name=category_name).one()
-    items = session.query(Item).filter_by(category=category).all()
-
-    return render_template(
-           'category.html', categories=categories,
-           category=category, items=items)
-
-
-@app.route('/catalog/<string:category_name>/<int:item_id>')
-def showItem(category_name, item_id):
-    """This will show an item"""
-    category = session.query(Category).filter_by(name=category_name).one()
-    item = session.query(Item).filter_by(id=item_id, category=category).one()
-
-    return render_template('item.html', category=category, item=item)
-
-
-@app.route('/catalog/new', methods=['GET', 'POST'])
-def newItem():
-    if 'username' not in login_session:
-        flash("Please login to create a new item")
-        return redirect(url_for('showLogin'))
-
-    categories = session.query(Category).all()
-
-    # This loads the ItemForm into a local variable
-    form = ItemForm(request.form)
-
-    if request.method == 'GET':
-        # This will render a form to add a new item
-        return render_template('newitem.html', categories=categories, form=form)
-    if request.method == 'POST':
-        # This checks whether the form passes validation
-        if form.validate():
-            # This will add a new item to the database
-            category = session.query(Category).filter_by(
-                       name=request.form['category']).one()
-
-            item = Item(name=request.form['name'],
-                        description=request.form['description'],
-                        category=category,
-                        user_id=login_session['user_id'])
-            session.add(item)
-            session.commit()
-
-            return redirect(url_for('showHome'))
-        else:
-            # This will run if the form fails validation
-            return render_template('newitem.html', categories=categories, form=form)
-
-
-
-@app.route('/catalog/<int:item_id>/edit', methods=['GET', 'POST'])
-def editItem(item_id):
-    if 'username' not in login_session:
-        flash("If you are the item owner, please login to edit this item")
-        return redirect(url_for('showLogin'))
-
-    categories = session.query(Category).all()
-    item = session.query(Item).filter_by(id=item_id).one()
-
-    # Checks if the current user is not the owner of the item
-    if login_session['user_id'] != item.user_id:
-        flash("You're not authorized to edit this item")
-        return redirect(url_for('showHome'))
-
-    # This loads the ItemForm into a local variable
-    form = ItemForm(request.form)
-
-    if request.method == 'GET':
-        # This will render a form to edit an item
-        form.name.data = item.name
-        form.description.data = item.description
-        return render_template(
-               'edititem.html',
-               categories=categories, item=item, form=form)
-
-    if request.method == 'POST':
-        # This checks whether the form passes validation
-        if form.validate():
-            # This will commit the item edit to the database
-            item.category = item.category
-            if request.form['name']:
-                item.name = request.form['name']
-            if request.form['description']:
-                item.description = request.form['description']
-            if request.form['category']:
-                item.category = session.query(Category).filter_by(
-                                name=request.form['category']).one()
-            session.add(item)
-            session.commit()
-
-            return redirect(url_for(
-                            'showItem',
-                            category_name=item.category.name, item_id=item.id))
-        else:
-            # This will run if the form fails validation
-            return render_template(
-                   'edititem.html',
-                   categories=categories, item=item, form=form)
-
-
-@app.route('/catalog/<item_id>/delete', methods=['GET', 'POST'])
-def deleteItem(item_id):
-    if 'username' not in login_session:
-        flash("If you are the item owner, please login to delete this item")
-        return redirect(url_for('showLogin'))
-
-    item = session.query(Item).filter_by(id=item_id).one()
-
-    # Checks if the current user is not the owner of the item
-    if login_session['user_id'] != item.user_id:
-        flash("You're not authorized to delete this item")
-        return redirect(url_for('showHome'))
-
-    if request.method == 'GET':
-        # This will render a form to delete an item
-        return render_template('deleteitem.html', item=item)
-    if request.method == 'POST':
-        # This will delete an item from the database
-        session.delete(item)
-        session.commit()
-        return redirect(url_for('showHome'))
-
-
-@app.route('/api/catalog')
-def catalogJSON():
-    """This will return the catalog in JSON format"""
-    output_json = []
-    categories = session.query(Category).all()
-    for category in categories:
-        items = session.query(Item).filter_by(category_id=category.id)
-        category_output = {}
-        category_output["id"] = category.id
-        category_output["name"] = category.name
-        category_output["Item"] = [i.serialize for i in items]
-        output_json.append(category_output)
-    return jsonify(Categories=output_json)
-
-
-@app.route('/api/catalog/<string:category_name>')
-def categoryJSON(category_name):
-    """This will return a specific category and its items in JSON format"""
-    output_json = []
-
-    # Check to see if category and category items exist
-    try:
-        category = session.query(Category).filter_by(name=category_name).one()
-        items = session.query(Item).filter_by(category_id=category.id)
-
-        category_output = {}
-        category_output["id"] = category.id
-        category_output["name"] = category.name
-        category_output["Item"] = [item.serialize for item in items]
-        output_json.append(category_output)
-
-        return jsonify(Category=output_json)
-    except:
-        return jsonify(Category=output_json)
-
-
-@app.route('/api/catalog/<string:category_name>/<int:item_id>')
-def itemJSON(category_name, item_id):
-    """This will return an item in JSON format"""
-
-    # Check to see if the item exists
-    try:
-        category = session.query(Category).filter_by(name=category_name).one()
-        item = session.query(Item).filter_by(
-                  id=item_id, category=category).one()
-
-        return jsonify(Item=[item.serialize])
-    except:
-        return jsonify(Item=[])
-
-
-if __name__ == '__main__':
-    app.debug = True
-    app.secret_key = 'super_secret_key'
-    app.run(host='0.0.0.0', port=5000)

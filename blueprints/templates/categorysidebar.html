@@ -1,0 +1,6 @@
+<h1>Categories</h1>
+{% for category in categories %}
+<p>
+  <a href="{{ url_for('site.showCategory', category_name=category.name) }}">{{ category.name|title|replace("-", " ") }}</a>
+</p>
+{% endfor %}

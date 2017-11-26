@@ -3,7 +3,7 @@
 <div class="row col-sm-6">
   <h1>Edit Item</h1>
   {% from "_formhelpers.html" import render_error_div %}
-  <form action="{{ url_for('editItem', item_id=item.id )}}" method="post">
+  <form action="{{ url_for('site.editItem', item_id=item.id )}}" method="post">
     <div class="form-group">
       {{ form.name.label }}
       {{ form.name(class="form-control mb-1",
