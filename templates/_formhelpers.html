@@ -1,0 +1,5 @@
+{% macro render_error_div(field) %}
+  {% if field.errors %}
+  <div class="alert alert-danger" role="alert">{{ field.errors[0] }}</div>
+  {% endif %}
+{% endmacro %}
