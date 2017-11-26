@@ -2,13 +2,16 @@
 {% block content %}
 <div class="row col-sm-6">
   <h1>Edit Item</h1>
+  {% from "_formhelpers.html" import render_error_div %}
   <form action="{{ url_for('editItem', item_id=item.id )}}" method="post">
     <div class="form-group">
       <label for="name">Name:</label>
       <input type="text" maxlength="50" class="form-control mb-1" name="name" placeholder="Name of the item" value="{{ item.name }}">
+      {{ render_error_div(form.name) }}
 
       <label for="description">Description:</label>
       <textarea class="form-control mb-1" maxlength="1500" rows="5" name="description" placeholder="Description of the item">{{ item.description }}</textarea>
+      {{ render_error_div(form.description) }}
       
       <div class="select mb-1">
         <select name="category">
