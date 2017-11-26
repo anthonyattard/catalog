@@ -312,7 +312,7 @@ def newItem():
 
     if request.method == 'GET':
         # This will render a form to add a new item
-        return render_template('additem.html', categories=categories)
+        return render_template('newitem.html', categories=categories)
     if request.method == 'POST':
         # This will add a new item to the database
         category = session.query(Category).filter_by(
