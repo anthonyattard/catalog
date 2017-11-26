@@ -41,7 +41,10 @@ def catalogRedirect():
 def showCategory(category_name):
     """This will show all items in a category"""
     categories = session.query(Category).all()
-    category = session.query(Category).filter_by(name=category_name).one()
+    category = session.query(Category).filter_by(name=category_name).one_or_none()
+    if category is None:
+        flash("Category does not exist")
+        return redirect(url_for('site.showHome'))
     items = session.query(Item).filter_by(category=category).all()
 
     return render_template(
@@ -52,8 +55,14 @@ def showCategory(category_name):
 @site.route('/catalog/<string:category_name>/<int:item_id>')
 def showItem(category_name, item_id):
     """This will show an item"""
-    category = session.query(Category).filter_by(name=category_name).one()
-    item = session.query(Item).filter_by(id=item_id, category=category).one()
+    category = session.query(Category).filter_by(name=category_name).one_or_none()
+    if category is None:
+        flash("Category does not exist")
+        return redirect(url_for('site.showHome'))
+    item = session.query(Item).filter_by(id=item_id, category=category).one_or_none()
+    if item is None:
+        flash("Item does not exist")
+        return redirect(url_for('site.showHome'))
 
     return render_template('item.html', category=category, item=item)
 
@@ -75,7 +84,10 @@ def newItem():
         if form.validate():
             # This will add a new item to the database
             category = session.query(Category).filter_by(
-                       name=request.form['category']).one()
+                       name=request.form['category']).one_or_none()
+            if category is None:
+                flash("Get out of dev tools, hacker!")
+                return redirect(url_for('site.showHome'))
 
             item = Item(name=request.form['name'],
                         description=request.form['description'],
@@ -97,7 +109,10 @@ def newItem():
 @login_required
 def editItem(item_id):
     categories = session.query(Category).all()
-    item = session.query(Item).filter_by(id=item_id).one()
+    item = session.query(Item).filter_by(id=item_id).one_or_none()
+    if item is None:
+        flash("Item does not exist")
+        return redirect(url_for('site.showHome'))
 
     # Checks if the current user is not the owner of the item
     if login_session['user_id'] != item.user_id:
@@ -126,7 +141,10 @@ def editItem(item_id):
                 item.description = request.form['description']
             if request.form['category']:
                 item.category = session.query(Category).filter_by(
-                                name=request.form['category']).one()
+                                name=request.form['category']).one_or_none()
+                if item.category is None:
+                    flash("Get out of dev tools, hacker!")
+                    return redirect(url_for('site.showHome'))
             session.add(item)
             session.commit()
 
@@ -143,7 +161,10 @@ def editItem(item_id):
 @site.route('/catalog/<item_id>/delete', methods=['GET', 'POST'])
 @login_required
 def deleteItem(item_id):
-    item = session.query(Item).filter_by(id=item_id).one()
+    item = session.query(Item).filter_by(id=item_id).one_or_none()
+    if item is None:
+        flash("Item does not exist")
+        return redirect(url_for('site.showHome'))
 
     # Checks if the current user is not the owner of the item
     if login_session['user_id'] != item.user_id:
