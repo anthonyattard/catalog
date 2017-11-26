@@ -357,6 +357,8 @@ def editItem(item_id):
 
     if request.method == 'GET':
         # This will render a form to edit an item
+        form.name.data = item.name
+        form.description.data = item.description
         return render_template(
                'edititem.html',
                categories=categories, item=item, form=form)
