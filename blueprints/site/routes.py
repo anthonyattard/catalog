@@ -2,10 +2,22 @@ from blueprints import session
 from flask import session as login_session
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from forms import ItemForm
+from functools import wraps
 from models import Category, Item
 from sqlalchemy import desc
 
 site = Blueprint('site', __name__)
+
+
+# Login Required Decorator
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' not in login_session:
+            flash("Please login to continue")
+            return redirect(url_for('authc.showLogin'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 @site.route('/')
@@ -47,11 +59,8 @@ def showItem(category_name, item_id):
 
 
 @site.route('/catalog/new', methods=['GET', 'POST'])
+@login_required
 def newItem():
-    if 'username' not in login_session:
-        flash("Please login to create a new item")
-        return redirect(url_for('site.showLogin'))
-
     categories = session.query(Category).all()
 
     # This loads the ItemForm into a local variable
@@ -85,11 +94,8 @@ def newItem():
 
 
 @site.route('/catalog/<int:item_id>/edit', methods=['GET', 'POST'])
+@login_required
 def editItem(item_id):
-    if 'username' not in login_session:
-        flash("If you are the item owner, please login to edit this item")
-        return redirect(url_for('site.showLogin'))
-
     categories = session.query(Category).all()
     item = session.query(Item).filter_by(id=item_id).one()
 
@@ -135,11 +141,8 @@ def editItem(item_id):
 
 
 @site.route('/catalog/<item_id>/delete', methods=['GET', 'POST'])
+@login_required
 def deleteItem(item_id):
-    if 'username' not in login_session:
-        flash("If you are the item owner, please login to delete this item")
-        return redirect(url_for('authc.showLogin'))
-
     item = session.query(Item).filter_by(id=item_id).one()
 
     # Checks if the current user is not the owner of the item
