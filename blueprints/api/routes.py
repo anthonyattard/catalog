@@ -1,6 +1,6 @@
+from blueprints import session
 from flask import Blueprint, jsonify
 from models import Category, Item
-from blueprints import session
 
 api = Blueprint('api', __name__)
 

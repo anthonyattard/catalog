@@ -1,15 +1,16 @@
 import json
 import random
 import string
+
 import requests
+
 import httplib2
+from blueprints import app, session
 from flask import session as login_session
-from flask import (Blueprint, flash, make_response, redirect,
-                   render_template, request, url_for)
+from flask import (Blueprint, flash, make_response, redirect, render_template,
+                   request, url_for)
 from models import User
 from oauth2client.client import FlowExchangeError, flow_from_clientsecrets
-from blueprints import app
-from blueprints import session
 
 authc = Blueprint('authc', __name__)
 

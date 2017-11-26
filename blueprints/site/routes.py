@@ -1,10 +1,9 @@
+from blueprints import session
 from flask import session as login_session
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from forms import ItemForm
 from models import Category, Item
 from sqlalchemy import desc
-
-from blueprints import session
 
 site = Blueprint('site', __name__)
 
