@@ -352,28 +352,38 @@ def editItem(item_id):
         flash("You're not authorized to edit this item")
         return redirect(url_for('showHome'))
 
+    # This loads the ItemForm into a local variable
+    form = ItemForm(request.form)
+
     if request.method == 'GET':
         # This will render a form to edit an item
         return render_template(
                'edititem.html',
-               categories=categories, item=item)
+               categories=categories, item=item, form=form)
 
     if request.method == 'POST':
-        # This will commit the item edit to the database
-        item.category = item.category
-        if request.form['name']:
-            item.name = request.form['name']
-        if request.form['description']:
-            item.description = request.form['description']
-        if request.form['category']:
-            item.category = session.query(Category).filter_by(
-                            name=request.form['category']).one()
-        session.add(item)
-        session.commit()
+        # This checks whether the form passes validation
+        if form.validate():
+            # This will commit the item edit to the database
+            item.category = item.category
+            if request.form['name']:
+                item.name = request.form['name']
+            if request.form['description']:
+                item.description = request.form['description']
+            if request.form['category']:
+                item.category = session.query(Category).filter_by(
+                                name=request.form['category']).one()
+            session.add(item)
+            session.commit()
 
-        return redirect(url_for(
-                        'showItem',
-                        category_name=item.category.name, item_id=item.id))
+            return redirect(url_for(
+                            'showItem',
+                            category_name=item.category.name, item_id=item.id))
+        else:
+            # This will run if the form fails validation
+            return render_template(
+                   'edititem.html',
+                   categories=categories, item=item, form=form)
 
 
 @app.route('/catalog/<item_id>/delete', methods=['GET', 'POST'])
