@@ -1,14 +1,15 @@
 from blueprints import session
-from flask import Blueprint, jsonify
+import dicttoxml
+from flask import Blueprint, jsonify, request
 from models import Category, Item
 
 api = Blueprint('api', __name__)
 
 
 @api.route('/catalog')
-def catalogJSON():
-    """This will return the catalog in JSON format"""
-    output_json = []
+def catalogAPI():
+    """Returns a catalog data object"""
+    output = []
     categories = session.query(Category).all()
     for category in categories:
         items = session.query(Item).filter_by(category_id=category.id)
@@ -16,14 +17,15 @@ def catalogJSON():
         category_output["id"] = category.id
         category_output["name"] = category.name
         category_output["Item"] = [i.serialize for i in items]
-        output_json.append(category_output)
-    return jsonify(Categories=output_json)
+        output.append(category_output)
+
+    return formatData(output, "Category")
 
 
 @api.route('/catalog/<string:category_name>')
-def categoryJSON(category_name):
-    """This will return a specific category and its items in JSON format"""
-    output_json = []
+def categoryAPI(category_name):
+    """Returns a category and its items as data objects"""
+    output = []
 
     # Check to see if category and category items exist
     try:
@@ -34,23 +36,40 @@ def categoryJSON(category_name):
         category_output["id"] = category.id
         category_output["name"] = category.name
         category_output["Item"] = [item.serialize for item in items]
-        output_json.append(category_output)
+        output.append(category_output)
 
-        return jsonify(Category=output_json)
+        return formatData(output, "Category")
     except:
-        return jsonify(Category=output_json)
+        return formatData(output, "Category")
 
 
 @api.route('/catalog/<string:category_name>/<int:item_id>')
-def itemJSON(category_name, item_id):
-    """This will return an item in JSON format"""
+def itemAPI(category_name, item_id):
+    """Returns an item data object"""
+    output = []
 
     # Check to see if the item exists
     try:
         category = session.query(Category).filter_by(name=category_name).one()
         item = session.query(Item).filter_by(
                   id=item_id, category=category).one()
+        output = [item.serialize]
 
-        return jsonify(Item=[item.serialize])
+        return formatData(output, "Item")
     except:
-        return jsonify(Item=[])
+        return formatData(output, "Item")
+
+
+# API Helper Functions
+def formatData(output, collection):
+    """Returns a data object as json(default) or xml"""
+    format = request.args.get('format')
+    # If query string for key format is xml
+    if format == 'xml' or format == 'XML':
+        # This will return the catalog in XML format
+        xml_output = dicttoxml.dicttoxml(output)
+        return xml_output, 200, {'Content-Type': 'text/xml; charset=utf-8'}
+    # If no query string is passed or any query other than format=xml is passed
+    else:
+        # Returns the catalog in JSON format.
+        return jsonify({collection: output})
