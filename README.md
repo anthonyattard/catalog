@@ -28,7 +28,7 @@ A clean and functional catalog application. Supports multiple categories and ite
     4. Update the appId in login.html with your Facebook appId.
 
 ## Usage
-To start the web server run `python server.py`
+To start the web server run `python run.py`
 
 ## Authors
 
