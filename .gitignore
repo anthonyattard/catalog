@@ -1,6 +1,3 @@
 *.db
 *.pyc
 *.map
-config.py
-google_auth.json
-facebook_auth.json
